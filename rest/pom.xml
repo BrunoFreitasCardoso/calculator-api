@@ -9,7 +9,11 @@
   <artifactId>rest</artifactId>
   <packaging>jar</packaging>
   <dependencies>
-
+    <dependency>
+      <groupId>com.calculatorapi</groupId>
+      <artifactId>common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
