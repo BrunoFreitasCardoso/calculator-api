@@ -27,9 +27,9 @@
     </appender>
 
     <!-- Logger Configuration -->
-    <logger name="org.apache.kafka" level="DEBUG"/>
-    <logger name="org.springframework.kafka" level="DEBUG"/>
-    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.apache.kafka" level="ERROR"/>
+    <logger name="org.springframework.kafka" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
     <logger name="com.example" level="DEBUG"/>
 
     <!-- Root Logger (Logs to console and file) -->
