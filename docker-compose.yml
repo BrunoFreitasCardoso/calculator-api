@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
 
   calculator:
     build:
@@ -12,6 +14,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
+    volumes:
+      - ./logs:/app/logs
 
 networks:
   my-network:
