@@ -29,7 +29,7 @@ public class CalculatorController {
     @GetMapping("/add")
     public ResponseEntity<Object> add(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
         String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
-        logger.info("Request ID: {} - Summation request: a = {}, b = {}", requestId, a, b);
+        logger.info("Summation request: a = {}, b = {}", a, b);
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUM);
         try {
@@ -45,7 +45,7 @@ public class CalculatorController {
     @GetMapping("/subtract")
     public ResponseEntity<Object> subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
         String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
-        logger.info("Request ID: {} - Subtraction request: a = {}, b = {}", requestId, a, b);
+        logger.info("Subtraction request: a = {}, b = {}", a, b);
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUBTRACTION);
         try {
@@ -61,7 +61,7 @@ public class CalculatorController {
     @GetMapping("/multiply")
     public ResponseEntity<Object> multiply(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
         String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
-        logger.info("Request ID: {} - Multiplication request: a = {}, b = {}", requestId, a, b);
+        logger.info("Multiplication request: a = {}, b = {}", a, b);
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.MULTIPLICATION);
         try {
@@ -77,7 +77,7 @@ public class CalculatorController {
     @GetMapping("/divide")
     public ResponseEntity<Object> divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
         String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
-        logger.info("Request ID: {} - Division request: a = {}, b = {}", requestId, a, b);
+        logger.info("Division request: a = {}, b = {}", a, b);
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.DIVISION);
         CalculationResponse response;
