@@ -36,7 +36,7 @@ public class CalculatorService {
                     logger.error(errorMessage);
                     throw new ArithmeticException(errorMessage);
                 }
-                result =  a.divide(b, RoundingMode.HALF_UP);
+                result =  a.divide(b, 10, RoundingMode.HALF_UP).stripTrailingZeros();
                 break;
         }
         logger.info("Calculated result: {}", result);
