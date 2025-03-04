@@ -37,16 +37,17 @@ public class CalculationRequestListener {
         CalculationRequest request = record.value();
         logger.info("Received calculation request from Kafka: {}", request);
 
-        try{
-            BigDecimal result = calculatorService.getResult(request);
-            CalculationResponse response = new CalculationResponse(requestId, result);
+        BigDecimal result = calculatorService.getResult(request);
+        if (result != null){
+            CalculationResponse response = new CalculationResponse(result);
             logger.info("Sending calculation response to Kafka: {}", response);
             return response;
-        }catch (ArithmeticException e){
-            logger.error("Arithmetic error for request: {}. Error: {}", request, e.getMessage());
-            CalculationResponse errorResponse = new CalculationResponse(requestId, null, e.getMessage());
-            logger.info("Sending error response to Kafka: {}", errorResponse);
-            return errorResponse;
         }
+
+        logger.error("Arithmetic error for request: {}.", request);
+        CalculationResponse errorResponse = new CalculationResponse(null);
+        logger.info("Sending error response to Kafka: {}", errorResponse);
+        return errorResponse;
+
     }
 }

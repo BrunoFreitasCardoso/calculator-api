@@ -41,8 +41,7 @@ public class CalculationRequestListenerTest {
         BigDecimal b = new BigDecimal(5);
         BigDecimal expectedResult = a.add(b);
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.SUM);
+        CalculationRequest request = new CalculationRequest(a, b, Operation.SUM);
 
         when(calculatorService.getResult(request)).thenAnswer(invocation -> {
             CalculationRequest req = invocation.getArgument(0);
@@ -50,10 +49,6 @@ public class CalculationRequestListenerTest {
                 return req.getOperand1().add(req.getOperand2());  // Perform the actual addition
             }
             throw new IllegalArgumentException("Unexpected operation: " + req.getOperation());
-        });
-
-        RecordHeaders headers = new RecordHeaders(new Header[]{
-                new RecordHeader("X-Request-ID", requestId.getBytes(StandardCharsets.UTF_8))
         });
 
         ConsumerRecord<String, CalculationRequest> record = new ConsumerRecord<>(
@@ -64,10 +59,7 @@ public class CalculationRequestListenerTest {
                 request          // Value (CalculationRequest)
         );
 
-        record.headers().add(headers.lastHeader("X-Request-ID"));
-
         CalculationResponse response = calculationRequestListener.consume(record);
-        assertEquals(requestId, response.getRequestId());
         assertEquals(expectedResult, response.getResult());
     }
 }

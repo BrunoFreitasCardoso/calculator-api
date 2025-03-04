@@ -5,6 +5,7 @@ import com.calculatorapi.Model.CalculationResponse;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.internals.RecordHeader;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
@@ -30,8 +31,9 @@ public class MessageProducer {
 
     public CalculationResponse sendAndReceive(CalculationRequest request) throws ExecutionException, InterruptedException {
         ProducerRecord<String, CalculationRequest> record = new ProducerRecord<>(REQUEST_TOPIC, request);
+        String requestId = MDC.get("requestId");
+        record.headers().add(new RecordHeader("X-Request-ID", requestId.getBytes(StandardCharsets.UTF_8)));
         record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, REPLY_TOPIC.getBytes()));
-        record.headers().add(new RecordHeader("X-Request-ID", request.getRequestId().getBytes(StandardCharsets.UTF_8)));
 
         RequestReplyFuture<String, CalculationRequest, CalculationResponse> future = replyingKafkaTemplate.sendAndReceive(record);
         ConsumerRecord<String, CalculationResponse> responseRecord = future.get();
