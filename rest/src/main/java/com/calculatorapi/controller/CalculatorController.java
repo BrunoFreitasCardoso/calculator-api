@@ -33,7 +33,7 @@ public class CalculatorController {
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUM);
         try {
-            CalculationResponse response = messageProducer.sendMessage(calculationRequest);
+            CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received sum: {}", response.getResult());
             return ResponseEntity.ok(response);
         } catch (ExecutionException | InterruptedException e) {
@@ -49,7 +49,7 @@ public class CalculatorController {
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUBTRACTION);
         try {
-            CalculationResponse response = messageProducer.sendMessage(calculationRequest);
+            CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received difference: {}", response.getResult());
             return ResponseEntity.ok(response);
         } catch (ExecutionException | InterruptedException e) {
@@ -65,7 +65,7 @@ public class CalculatorController {
 
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.MULTIPLICATION);
         try {
-            CalculationResponse response = messageProducer.sendMessage(calculationRequest);
+            CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received product: {}", response.getResult());
             return ResponseEntity.ok(response);
         } catch (ExecutionException | InterruptedException e) {
@@ -82,8 +82,7 @@ public class CalculatorController {
         CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.DIVISION);
         CalculationResponse response;
         try {
-            response = messageProducer.sendMessage(calculationRequest);
-            logger.info("Successfully received quotient: {}", response.getResult());
+            response = messageProducer.sendAndReceive(calculationRequest);
         } catch (ExecutionException | InterruptedException e) {
             logger.error("Error occurred while communicating with Kafka: {}", e.getMessage());
             throw new KafkaException();
