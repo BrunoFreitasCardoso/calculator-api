@@ -19,8 +19,7 @@ public class CalculatorServiceTest {
         BigDecimal b = new BigDecimal(10);
         BigDecimal expectedResult = new BigDecimal(15);
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.SUM);
+        CalculationRequest request = new CalculationRequest(a, b, Operation.SUM);
         BigDecimal result = calculatorService.getResult(request);
         assertEquals(expectedResult, result, "Sum operation should return 15.0");
     }
@@ -31,8 +30,7 @@ public class CalculatorServiceTest {
         BigDecimal b = new BigDecimal(4);
         BigDecimal expectedResult = new BigDecimal(6);
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.SUBTRACTION);
+        CalculationRequest request = new CalculationRequest(a, b, Operation.SUBTRACTION);
         BigDecimal result = calculatorService.getResult(request);
         assertEquals(expectedResult, result, "Subtract operation should return 6.0");
     }
@@ -43,8 +41,7 @@ public class CalculatorServiceTest {
         BigDecimal b = new BigDecimal(7);
         BigDecimal expectedResult = new BigDecimal(21);
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.MULTIPLICATION);
+        CalculationRequest request = new CalculationRequest(a, b, Operation.MULTIPLICATION);
         BigDecimal result = calculatorService.getResult(request);
         assertEquals(expectedResult, result, "Multiply operation should return 21.0");
     }
@@ -55,8 +52,7 @@ public class CalculatorServiceTest {
         BigDecimal b = new BigDecimal(4);
         BigDecimal expectedResult = new BigDecimal(5);
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.DIVISION);
+        CalculationRequest request = new CalculationRequest(a, b, Operation.DIVISION);
         BigDecimal result = calculatorService.getResult(request);
         assertEquals(expectedResult, result, "Division operation should return 5.0");
     }
@@ -65,10 +61,10 @@ public class CalculatorServiceTest {
     void testDivisionByZeroThrowsException() {
         BigDecimal a = new BigDecimal(20);
         BigDecimal b = new BigDecimal(0);
+        BigDecimal expectedResult = null;
 
-        String requestId = "1";
-        CalculationRequest request = new CalculationRequest(requestId, a, b, Operation.DIVISION);
-        assertThrows(ArithmeticException.class, () -> calculatorService.getResult(request),
-                "Division by zero should throw an ArithmeticException");
+        CalculationRequest request = new CalculationRequest(a, b, Operation.DIVISION);
+        BigDecimal result = calculatorService.getResult(request);
+        assertEquals(expectedResult, result, "Division operation should return 5.0");
     }
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class CalculationRequest implements Serializable  {
-    private String requestId;
     private BigDecimal operand1;
     private BigDecimal operand2;
     private Operation operation;
@@ -12,15 +11,10 @@ public class CalculationRequest implements Serializable  {
     // Default constructor (required for deserialization)
     public CalculationRequest() {}
 
-    public CalculationRequest(String requestId, BigDecimal operand1, BigDecimal operand2, Operation operation) {
-        this.requestId = requestId;
+    public CalculationRequest(BigDecimal operand1, BigDecimal operand2, Operation operation) {
         this.operand1 = operand1;
         this.operand2 = operand2;
         this.operation = operation;
-    }
-
-    public String getRequestId() {
-        return requestId;
     }
 
     public BigDecimal getOperand1() {

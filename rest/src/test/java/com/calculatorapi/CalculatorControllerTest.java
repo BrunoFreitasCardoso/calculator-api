@@ -49,17 +49,16 @@ public class CalculatorControllerTest {
         BigDecimal b = new BigDecimal(3.0);
         BigDecimal expectedResult = a.add(b);
 
-        String requestId = "1";
         when(messageProducer.sendAndReceive(any(CalculationRequest.class)))
                 .thenAnswer(invocation -> {
                     CalculationRequest request = invocation.getArgument(0);
                     if (Operation.SUM.equals(request.getOperation())) {
-                        return new CalculationResponse(requestId, expectedResult);
+                        return new CalculationResponse(expectedResult);
                     }
                     throw new IllegalArgumentException("Unexpected operation");
                 });
 
-        CalculationResponse expectedResponse = new CalculationResponse(requestId, expectedResult);
+        CalculationResponse expectedResponse = new CalculationResponse(expectedResult);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResponseJson = objectMapper.writeValueAsString(expectedResponse);
 
@@ -76,17 +75,16 @@ public class CalculatorControllerTest {
         BigDecimal b = new BigDecimal(3.0);
         BigDecimal expectedResult = a.subtract(b);
 
-        String requestId = "1";
         when(messageProducer.sendAndReceive(any(CalculationRequest.class)))
                 .thenAnswer(invocation -> {
                     CalculationRequest request = invocation.getArgument(0);
                     if (Operation.SUBTRACTION.equals(request.getOperation())) {
-                        return new CalculationResponse(requestId, expectedResult);
+                        return new CalculationResponse(expectedResult);
                     }
                     throw new IllegalArgumentException("Unexpected operation");
                 });
 
-        CalculationResponse expectedResponse = new CalculationResponse(requestId, expectedResult);
+        CalculationResponse expectedResponse = new CalculationResponse(expectedResult);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResponseJson = objectMapper.writeValueAsString(expectedResponse);
 
@@ -103,17 +101,16 @@ public class CalculatorControllerTest {
         BigDecimal b = new BigDecimal(3.0);
         BigDecimal expectedResult = a.multiply(b);
 
-        String requestId = "1";
         when(messageProducer.sendAndReceive(any(CalculationRequest.class)))
                 .thenAnswer(invocation -> {
                     CalculationRequest request = invocation.getArgument(0);
                     if (Operation.MULTIPLICATION.equals(request.getOperation())) {
-                        return new CalculationResponse(requestId, expectedResult);
+                        return new CalculationResponse(expectedResult);
                     }
                     throw new IllegalArgumentException("Unexpected operation");
                 });
 
-        CalculationResponse expectedResponse = new CalculationResponse(requestId, expectedResult);
+        CalculationResponse expectedResponse = new CalculationResponse(expectedResult);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResponseJson = objectMapper.writeValueAsString(expectedResponse);
 
@@ -130,17 +127,16 @@ public class CalculatorControllerTest {
         BigDecimal b = new BigDecimal(5);
         BigDecimal expectedResult = a.divide(b, 10, RoundingMode.HALF_DOWN);
 
-        String requestId = "1";
         when(messageProducer.sendAndReceive(any(CalculationRequest.class)))
                 .thenAnswer(invocation -> {
                     CalculationRequest request = invocation.getArgument(0);
                     if (Operation.DIVISION.equals(request.getOperation())) {
-                        return new CalculationResponse(requestId, expectedResult);
+                        return new CalculationResponse(expectedResult);
                     }
                     throw new IllegalArgumentException("Unexpected operation");
                 });
 
-        CalculationResponse expectedResponse = new CalculationResponse(requestId, expectedResult);
+        CalculationResponse expectedResponse = new CalculationResponse(expectedResult);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResponseJson = objectMapper.writeValueAsString(expectedResponse);
 

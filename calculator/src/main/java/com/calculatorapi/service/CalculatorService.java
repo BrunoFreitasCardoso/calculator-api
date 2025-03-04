@@ -13,7 +13,7 @@ import java.math.RoundingMode;
 public class CalculatorService {
     private static final Logger logger = LoggerFactory.getLogger(CalculatorService.class);
 
-    public BigDecimal getResult(CalculationRequest request) throws ArithmeticException{
+    public BigDecimal getResult(CalculationRequest request) {
         Operation operation = request.getOperation();
         BigDecimal a = request.getOperand1();
         BigDecimal b = request.getOperand2();
@@ -32,11 +32,11 @@ public class CalculatorService {
             default:
                 //division
                 if (b.compareTo(BigDecimal.ZERO) == 0) {
-                    String errorMessage = String.format("Division by zero attempted: %s/%s", a, b);
-                    logger.error(errorMessage);
-                    throw new ArithmeticException(errorMessage);
+                    logger.error("Division by zero attempted: {}/{}", a, b);
+                    return null;
                 }
-                result =  a.divide(b, 10, RoundingMode.HALF_UP).stripTrailingZeros();
+                int scale = Math.max(a.scale(), b.scale());
+                result =  a.divide(b, scale, RoundingMode.HALF_UP).stripTrailingZeros();
                 break;
         }
         logger.info("Calculated result: {}", result);

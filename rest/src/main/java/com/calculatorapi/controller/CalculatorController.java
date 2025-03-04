@@ -31,7 +31,7 @@ public class CalculatorController {
         String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
         logger.info("Summation request: a = {}, b = {}", a, b);
 
-        CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUM);
+        CalculationRequest calculationRequest = new CalculationRequest(a, b, Operation.SUM);
         try {
             CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received sum: {}", response.getResult());
@@ -44,10 +44,9 @@ public class CalculatorController {
 
     @GetMapping("/subtract")
     public ResponseEntity<Object> subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
-        String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
         logger.info("Subtraction request: a = {}, b = {}", a, b);
 
-        CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.SUBTRACTION);
+        CalculationRequest calculationRequest = new CalculationRequest(a, b, Operation.SUBTRACTION);
         try {
             CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received difference: {}", response.getResult());
@@ -60,10 +59,9 @@ public class CalculatorController {
 
     @GetMapping("/multiply")
     public ResponseEntity<Object> multiply(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
-        String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
         logger.info("Multiplication request: a = {}, b = {}", a, b);
 
-        CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.MULTIPLICATION);
+        CalculationRequest calculationRequest = new CalculationRequest(a, b, Operation.MULTIPLICATION);
         try {
             CalculationResponse response = messageProducer.sendAndReceive(calculationRequest);
             logger.info("Successfully received product: {}", response.getResult());
@@ -76,10 +74,9 @@ public class CalculatorController {
 
     @GetMapping("/divide")
     public ResponseEntity<Object> divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b, HttpServletRequest request) {
-        String requestId = (String) request.getAttribute(UniqueIdentifierFilter.REQUEST_ID_HEADER);
         logger.info("Division request: a = {}, b = {}", a, b);
 
-        CalculationRequest calculationRequest = new CalculationRequest(requestId, a, b, Operation.DIVISION);
+        CalculationRequest calculationRequest = new CalculationRequest(a, b, Operation.DIVISION);
         CalculationResponse response;
         try {
             response = messageProducer.sendAndReceive(calculationRequest);
@@ -87,9 +84,10 @@ public class CalculatorController {
             logger.error("Error occurred while communicating with Kafka: {}", e.getMessage());
             throw new KafkaException();
         }
-        if (response.getErrorMessage() != null) {
-            logger.error(response.getErrorMessage());
-            throw new ArithmeticException(response.getErrorMessage());
+        if (response.getResult() == null) {
+            String errorMessage = String.format("Division by zero attempted: %s/%s", a, b);
+            logger.error(errorMessage);
+            throw new ArithmeticException(errorMessage);
         }
         logger.info("Successfully received quotient: {}", response.getResult());
         return ResponseEntity.ok(response);
