@@ -28,7 +28,7 @@ public class MessageProducer {
         this.replyingKafkaTemplate = replyingKafkaTemplate;
     }
 
-    public CalculationResponse sendMessage(CalculationRequest request) throws ExecutionException, InterruptedException {
+    public CalculationResponse sendAndReceive(CalculationRequest request) throws ExecutionException, InterruptedException {
         ProducerRecord<String, CalculationRequest> record = new ProducerRecord<>(REQUEST_TOPIC, request);
         record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, REPLY_TOPIC.getBytes()));
         record.headers().add(new RecordHeader("X-Request-ID", request.getRequestId().getBytes(StandardCharsets.UTF_8)));
