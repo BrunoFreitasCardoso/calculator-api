@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -31,8 +32,10 @@ public class CalculationRequestListener {
         if (header != null) {
             requestId = new String(header.value());
         }
+        MDC.put("requestId", requestId);
+
         CalculationRequest request = record.value();
-        logger.info("Received calculation request from Kafka: {} (Request ID: {})", request, requestId);
+        logger.info("Received calculation request from Kafka: {}", request);
 
         try{
             BigDecimal result = calculatorService.getResult(request);
